@@ -90,8 +90,8 @@ surveyOutput_individual <- function(df) {
         #.required = required_matrix
       #)
     output <- matrixInput(
-        inputId = base::unique(df$input_id)
-      value = matrix("", 2, 2)
+        inputId = base::unique(df$input_id),
+        value = matrix("", 2, 2)
       
       )
 
