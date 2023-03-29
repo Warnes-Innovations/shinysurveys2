@@ -54,7 +54,7 @@ surveyOutput_individual <- function(df) {
         #inputId = base::unique(df$input_id),
         #label = addRequiredUI_internal(df),
         #placeholder = df$option
-      )
+      #)
 
   } else if (inputType == "mc") {
 
