@@ -45,11 +45,15 @@ surveyOutput_individual <- function(df) {
       )
   } else if (inputType == "numeric") {
 
-    output <-
-      numberInput(
-        inputId = base::unique(df$input_id),
-        label = addRequiredUI_internal(df),
-        placeholder = df$option
+     output <-
+      shiny::textInput(inputId = base::unique(df$input_id),
+                       label = addRequiredUI_internal(df),
+                       placeholder = df$option)
+   # output <-
+     # numberInput(
+        #inputId = base::unique(df$input_id),
+        #label = addRequiredUI_internal(df),
+        #placeholder = df$option
       )
 
   } else if (inputType == "mc") {
