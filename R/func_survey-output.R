@@ -92,7 +92,6 @@ surveyOutput_individual <- function(df) {
     output <- matrixInput(
         inputId = base::unique(df$input_id),
         value = matrix("", 2, 2)
-      
       )
 
   } else if (inputType == "instructions") {
