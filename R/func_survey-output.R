@@ -44,17 +44,12 @@ surveyOutput_individual <- function(df) {
         )
       )
   } else if (inputType == "numeric") {
-
-     output <-
-      shiny::textInput(inputId = base::unique(df$input_id),
-                       label = addRequiredUI_internal(df),
-                       placeholder = df$option)
-   # output <-
-     # numberInput(
-        #inputId = base::unique(df$input_id),
-        #label = addRequiredUI_internal(df),
-        #placeholder = df$option
-      #)
+    output <-
+      numberInput(
+        inputId = base::unique(df$input_id),
+        label = addRequiredUI_internal(df),
+        placeholder = df$option
+      )
 
   } else if (inputType == "mc") {
 
@@ -86,13 +81,18 @@ surveyOutput_individual <- function(df) {
 
     required_matrix <- ifelse(all(df$required), TRUE, FALSE)
 
-    output <-
-      radioMatrixInput(
-        inputId = base::unique(df$input_id),
-        responseItems = base::unique(df$question),
-        choices = base::unique(df$option),
-        selected = NULL,
-        .required = required_matrix
+    #output <-
+      #radioMatrixInput(
+        #inputId = base::unique(df$input_id),
+        #responseItems = base::unique(df$question),
+        #choices = base::unique(df$option),
+        #selected = NULL,
+        #.required = required_matrix
+      #)
+    output <- matrixInput(
+        inputId = base::unique(df$input_id)
+      value = matrix("", 2, 2)
+      
       )
 
   } else if (inputType == "instructions") {
