@@ -61,8 +61,12 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
   for (i in seq_along(survey_env$unique_questions)) {
     survey_env$unique_questions[[i]]$question_number <- rep(i, nrow(survey_env$unique_questions[[i]]))
   }
+  print("unique questions")
+  print(survey_env$unique_questions)
 
   survey_env$ordered_question_df <- do.call(rbind, survey_env$unique_questions)
+  print("ordered df")
+  print(survey_env$ordered_question_df)
 
   shown_subset <- survey_env$ordered_question_df[which(survey_env$ordered_question_df$input_id %in% shown_questions),]
   shown_input_types <- do.call(rbind,
@@ -77,10 +81,15 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
                           data.frame(response = check_length(.input = session$input[[x]]))
                         }
                       ))
+  print("responses")
+  print(responses)
 
   output <- make_survey_response_df(.question_id = shown_questions,
                                     .question_type = shown_input_types,
                                     .response = responses)
+
+  print("output")
+  print(output)
 
   if ("matrix" %in% survey_env$ordered_question_df$input_type) {
 
