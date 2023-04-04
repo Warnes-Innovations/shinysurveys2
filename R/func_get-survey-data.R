@@ -95,7 +95,7 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     #output <- rbind(output, matrix_responses)
     #print(paste0("Output: ")) #
     #print(output) #
-    rownames(output) <- NULL
+    #rownames(output) <- NULL
 
     #bounded <- survey_env$ordered_question_df
     #bounded[which(bounded$input_type == "matrix"), "input_id"] <- bounded[which(bounded$input_type == "matrix"), "question"]
