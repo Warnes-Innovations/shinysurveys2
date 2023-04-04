@@ -5,6 +5,12 @@
 #' @keywords internal
 #' @return UI Code for a Shiny App.
 #'
+# == Insert
+splitter <- function(text){
+  sapply(str_split(text, ","),str_trim) %>% as.vector()
+}
+# == End Insert
+
 surveyOutput_individual <- function(df) {
 
   inputType <- base::unique(df$input_type)
@@ -76,7 +82,7 @@ surveyOutput_individual <- function(df) {
         selected = base::character(0),
         choices = df$option
       )
-
+ # Insert ========
   } else if (inputType == "matrix") {
 
     required_matrix <- ifelse(all(df$required), TRUE, FALSE)
@@ -92,10 +98,17 @@ surveyOutput_individual <- function(df) {
     output <- matrixInput(
       # Comment
         inputId = base::unique(df$input_id),
-        value = matrix("", 2, 2)
+        value = matrix("",
+                               nrow=length(splitter(str_split(option,";")[[1]][1])),
+                               ncol=length(splitter(str_split(option,";")[[1]][2])),
+                               dimnames = list(splitter(str_split(option,";")[[1]][1]),
+                                               splitter(str_split(option,";")[[1]][2]))
+        )
       )
 
-  } else if (inputType == "instructions") {
+  }
+# End Insert ========
+  else if (inputType == "instructions") {
 
     output <- shiny::div(
       class = "instructions-only",
