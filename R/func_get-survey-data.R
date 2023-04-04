@@ -120,6 +120,7 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
 
   }
 
+
   if (!is.null(custom_id)) {
     output <- cbind(subject_id = custom_id,
                     output)
@@ -127,18 +128,25 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     output <- cbind(subject_id = session$input$userID,
                     output)
   }
+  print("output 1")
+  print(output)
 
   output <- split(output, factor(output$question_id, levels = unique(output$question_id)))
   output <- do.call(rbind, lapply(
     output, function(x) x[1,]
   ))
   rownames(output) <- NULL
+  print("output 2")
+  print(output)
 
   if (include_dependencies) {
     output[which(output$question_id %in% session$input$shinysurveysHiddenInputs), "response"] <- dependency_string
   } else if (!include_dependencies) {
     output <- output[which(!output$question_id %in% session$input$shinysurveysHiddenInputs),]
   }
+
+  print("output 3")
+  print(output)
 
   return(output)
 
