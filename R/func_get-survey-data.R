@@ -62,11 +62,11 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     survey_env$unique_questions[[i]]$question_number <- rep(i, nrow(survey_env$unique_questions[[i]]))
   }
   print("unique questions")
-  print(survey_env$unique_questions)
+  print(str(survey_env$unique_questions))
 
   survey_env$ordered_question_df <- do.call(rbind, survey_env$unique_questions)
   print("ordered df")
-  print(survey_env$ordered_question_df)
+  print(str(survey_env$ordered_question_df))
 
   shown_subset <- survey_env$ordered_question_df[which(survey_env$ordered_question_df$input_id %in% shown_questions),]
   shown_input_types <- do.call(rbind,
@@ -82,14 +82,14 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
                         }
                       ))
   print("responses")
-  print(responses)
+  print(str(responses))
 
   output <- make_survey_response_df(.question_id = shown_questions,
                                     .question_type = shown_input_types,
                                     .response = responses)
 
   print("output")
-  print(output)
+  print(str(output))
 
   if ("matrix" %in% survey_env$ordered_question_df$input_type) {
 
@@ -103,8 +103,6 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     #)
 
     #output <- rbind(output, matrix_responses)
-    print(paste0("Output: ")) #
-    print(output) #
     #rownames(output) <- NULL
 
     #bounded <- survey_env$ordered_question_df
@@ -128,16 +126,14 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     output <- cbind(subject_id = session$input$userID,
                     output)
   }
-  print("output 1")
-  print(output)
+
 
   output <- split(output, factor(output$question_id, levels = unique(output$question_id)))
   output <- do.call(rbind, lapply(
     output, function(x) x[1,]
   ))
   rownames(output) <- NULL
-  print("output 2")
-  print(output)
+
 
   if (include_dependencies) {
     output[which(output$question_id %in% session$input$shinysurveysHiddenInputs), "response"] <- dependency_string
@@ -145,8 +141,7 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     output <- output[which(!output$question_id %in% session$input$shinysurveysHiddenInputs),]
   }
 
-  print("output 3")
-  print(output)
+
 
   return(output)
 
