@@ -99,10 +99,10 @@ surveyOutput_individual <- function(df) {
       # Comment
         inputId = base::unique(df$input_id),
         value = matrix("",
-                               nrow=length(splitter(str_split(option,";")[[1]][1])),
-                               ncol=length(splitter(str_split(option,";")[[1]][2])),
-                               dimnames = list(splitter(str_split(option,";")[[1]][1]),
-                                               splitter(str_split(option,";")[[1]][2]))
+                               nrow=length(splitter(str_split(df$option,";")[[1]][1])),
+                               ncol=length(splitter(str_split(df$option,";")[[1]][2])),
+                               dimnames = list(splitter(str_split(df$option,";")[[1]][1]),
+                                               splitter(str_split(df$option,";")[[1]][2]))
         )
       )
 
