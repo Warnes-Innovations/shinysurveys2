@@ -84,14 +84,16 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
 
   if ("matrix" %in% survey_env$ordered_question_df$input_type) {
 
-    #matrix_ids <- unique(survey_env$ordered_question_df[which(survey_env$ordered_question_df$input_type == "matrix"), "input_id"])$input_id
+    matrix_ids <- unique(survey_env$ordered_question_df[which(survey_env$ordered_question_df$input_type == "matrix"), "input_id"])$input_id
     #print(paste0("Matrix IDs: ", toString(matrix_ids))) #
 
-    #matrix_responses <- do.call(rbind,
-    #                            lapply(
-    #                              matrix_ids, function(x) session$input[[x]]
-    #                            )
-    #)
+    matrix_responses <- do.call(rbind,
+                                lapply(
+                                  matrix_ids, function(x) session$input[[x]]
+                                )
+    )
+
+
     #output <- rbind(output, matrix_responses)
     #print(paste0("Output: ")) #
     #print(output) #
