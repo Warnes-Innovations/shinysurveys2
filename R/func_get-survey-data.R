@@ -118,10 +118,10 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     sapply(str_split(text, ","),str_trim) %>% as.vector()
   }
 
-  print("output")
-  print(output)
-  print("ordered")
-  print(survey_env$ordered_question_df)
+  #print("output")
+  #print(output)
+  #print("ordered")
+  #print(survey_env$ordered_question_df)
 
 
   output2 <- rename(output, input_id = question_id)
@@ -133,6 +133,8 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     {
       if(op$input_type[i] == "matrix")
       {
+        myid <- op$input_id[i]
+
         qrow <- length(splitter(str_split(op$option[i],"/")[[1]][1]))
         qcol <- length(splitter(str_split(op$option[i],"/")[[1]][2]))
         splitted <- splitter(op$response[i])
@@ -143,7 +145,10 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
 
 
         M <- matrix(splitted, qrow, qcol, byrow=F)
-        output$response[i] <-paste(apply(M, 1, paste, collapse=","), collapse=";")
+        # Match response to appropriate question. matrix questions only have 1 row for its
+        # corresponding id
+        which <- output$input_id == myid
+        output$response[which] <-paste(apply(M, 1, paste, collapse=","), collapse=";")
       }
 
     }
