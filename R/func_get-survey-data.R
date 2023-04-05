@@ -118,6 +118,11 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     sapply(str_split(text, ","),str_trim) %>% as.vector()
   }
 
+  print("output")
+  print(output)
+  print("ordered")
+  print(survey_env$ordered_question_df)
+
 
   output2 <- rename(output, input_id = question_id)
   op <- inner_join(survey_env$ordered_question_df, output2, by="input_id")
