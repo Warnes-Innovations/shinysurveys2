@@ -61,12 +61,12 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
   for (i in seq_along(survey_env$unique_questions)) {
     survey_env$unique_questions[[i]]$question_number <- rep(i, nrow(survey_env$unique_questions[[i]]))
   }
-  print("unique questions")
-  print(str(survey_env$unique_questions))
+  #print("unique questions")
+  #print(str(survey_env$unique_questions))
 
   survey_env$ordered_question_df <- do.call(rbind, survey_env$unique_questions)
-  print("ordered df")
-  print(str(survey_env$ordered_question_df))
+  #print("ordered df")
+ # print(str(survey_env$ordered_question_df))
 
   shown_subset <- survey_env$ordered_question_df[which(survey_env$ordered_question_df$input_id %in% shown_questions),]
   shown_input_types <- do.call(rbind,
@@ -81,15 +81,15 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
                           data.frame(response = check_length(.input = session$input[[x]]))
                         }
                       ))
-  print("responses")
-  print(str(responses))
+  #print("responses")
+  #print(str(responses))
 
   output <- make_survey_response_df(.question_id = shown_questions,
                                     .question_type = shown_input_types,
                                     .response = responses)
 
-  print("output")
-  print(str(output))
+  #print("output")
+  #print(str(output))
 
 
   if (!is.null(custom_id)) {
@@ -118,24 +118,10 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     sapply(str_split(text, ","),str_trim) %>% as.vector()
   }
 
-  #ordered df looks like
-  #  q   a,b,c;d,e,f  matrix  id1  . ..
-  #
-  #
-
-  # output looks like
-  # id1   matrix    numeric
-  # id2  2,1,3,,       33
-  #
-
-
 
   output2 <- rename(output, input_id = question_id)
   op <- inner_join(survey_env$ordered_question_df, output2, by="input_id")
 
-  splitter <- function(text){
-    sapply(str_split(text, ","),str_trim) %>% as.vector()
-  }
   if(nrow(op)>0)
   {
     for(i in 1:nrow(op))
@@ -145,6 +131,11 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
         qrow <- length(splitter(str_split(op$option[i],"/")[[1]][1]))
         qcol <- length(splitter(str_split(op$option[i],"/")[[1]][2]))
         splitted <- splitter(op$response[i])
+
+        # replace empty cells with NA
+        empty <- str_trim(splitted) == ""
+        splitted[empty] <- NA
+
 
         M <- matrix(splitted, qrow, qcol, byrow=F)
         output$response[i] <-paste(apply(M, 1, paste, collapse=","), collapse=";")
