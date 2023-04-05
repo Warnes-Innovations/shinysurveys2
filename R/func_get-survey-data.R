@@ -91,33 +91,6 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
   print("output")
   print(str(output))
 
-  if ("matrix" %in% survey_env$ordered_question_df$input_type) {
-
-    #matrix_ids <- unique(survey_env$ordered_question_df[which(survey_env$ordered_question_df$input_type == "matrix"), "input_id"])$input_id
-    #print(paste0("Matrix IDs: ", toString(matrix_ids))) #
-
-    #matrix_responses <- do.call(rbind,
-    #                            lapply(
-    #                              matrix_ids, function(x) session$input[[x]]
-    #                            )
-    #)
-
-    #output <- rbind(output, matrix_responses)
-    #rownames(output) <- NULL
-
-    #bounded <- survey_env$ordered_question_df
-    #bounded[which(bounded$input_type == "matrix"), "input_id"] <- bounded[which(bounded$input_type == "matrix"), "question"]
-    #bounded[which(bounded$input_type == "matrix"),"input_id"] <- vapply(X = bounded[which(bounded$input_type == "matrix"), "input_id"]$input_id, FUN = function(x) {
-    #  create_radio_input_id(x)}, FUN.VALUE = character(1), USE.NAMES = FALSE)
-    #bounded <- bounded[,c("input_id", "input_type", "question_number")]
-    #names(bounded) <- c("question_id", "question_type", "question_number")
-
-    #output <- merge(output, bounded)
-    #output <- output[order(output$question_number), ]
-    #output <- output[,-4]
-
-  }
-
 
   if (!is.null(custom_id)) {
     output <- cbind(subject_id = custom_id,
@@ -140,6 +113,47 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
   } else if (!include_dependencies) {
     output <- output[which(!output$question_id %in% session$input$shinysurveysHiddenInputs),]
   }
+
+  splitter <- function(text){
+    sapply(str_split(text, ","),str_trim) %>% as.vector()
+  }
+
+  #ordered df looks like
+  #  q   a,b,c;d,e,f  matrix  id1  . ..
+  #
+  #
+
+  # output looks like
+  # id1   matrix    numeric
+  # id2  2,1,3,,       33
+  #
+
+
+
+  output2 <- rename(output, input_id = question_id)
+  op <- inner_join(survey_env$ordered_question_df, output2, by="input_id")
+
+  splitter <- function(text){
+    sapply(str_split(text, ","),str_trim) %>% as.vector()
+  }
+  if(nrow(op)>0)
+  {
+    for(i in 1:nrow(op))
+    {
+      if(op$input_type[i] == "matrix")
+      {
+        qrow <- length(splitter(str_split(op$option[i],"/")[[1]][1]))
+        qcol <- length(splitter(str_split(op$option[i],"/")[[1]][2]))
+        splitted <- splitter(op$response[i])
+
+        M <- matrix(splitted, qrow, qcol, byrow=F)
+        output$response[i] <-paste(apply(M, 1, paste, collapse=","), collapse=";")
+      }
+
+    }
+
+  }
+
 
 
 
