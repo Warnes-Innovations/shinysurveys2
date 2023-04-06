@@ -124,36 +124,37 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
   #print(survey_env$ordered_question_df)
 
 
-  output2 <- rename(output, input_id = question_id)
-  op <- inner_join(survey_env$ordered_question_df, output2, by="input_id")
+  ordered_df <- survey_env$ordered_question_df
 
-  if(nrow(op)>0)
+  if(nrow(output)>0)
   {
-    for(i in 1:nrow(op))
+    for(i in 1:nrow(output))
     {
-      if(op$input_type[i] == "matrix")
+      if(output$question_type[i] == "matrix")
       {
-        myid <- op$input_id[i]
+        myid <- output$question_id[i]
 
-        qrow <- length(splitter(str_split(op$option[i],"/")[[1]][1]))
-        qcol <- length(splitter(str_split(op$option[i],"/")[[1]][2]))
-        splitted <- splitter(op$response[i])
+
+        # Store id index to access dim info
+        ordered_index <- which(ordered_df$input_id == myid)
+        qrow <- length(splitter(str_split(ordered_df$option[ordered_index],"/")[[1]][1]))
+        qcol <- length(splitter(str_split(ordered_df$option[ordered_index],"/")[[1]][2]))
+
+        splitted <- splitter(output$response[i])
 
         # replace empty cells with NA
         empty <- str_trim(splitted) == ""
         splitted[empty] <- NA
 
-
+        # format into matrix to then combine
         M <- matrix(splitted, qrow, qcol, byrow=F)
-        # Match response to appropriate question. matrix questions only have 1 row for its
-        # corresponding id
-        which <- output$input_id == myid
-        output$response[which] <-paste(apply(M, 1, paste, collapse=","), collapse=";")
+        output$response[i] <-paste(apply(M, 1, paste, collapse=","), collapse=";")
       }
 
     }
 
   }
+
 
 
 
