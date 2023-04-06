@@ -124,11 +124,8 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
   #print(survey_env$ordered_question_df)
 
 
-<<<<<<< HEAD
   ordered_df <- survey_env$ordered_question_df
-=======
-  ordered_df <- ordered_question_df
->>>>>>> c8499a40d0b67961b0d53371c7bf90e9f66b5fd6
+
 
   if(nrow(output)>0)
   {
