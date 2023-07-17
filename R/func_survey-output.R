@@ -113,8 +113,8 @@ surveyOutput_individual <- function(df) {
     output <-
       radioMatrixInput(
         inputId = base::unique(df$input_id),
-        responseItems = base::unique(df$question),
-        choices = base::unique(df$option),
+        responseItems = splitter(str_split(df$option,"/")[[1]][1]),
+        choices = splitter(str_split(df$option,"/")[[1]][2]),
         selected = NULL,
         .required = required_matrix
       )
