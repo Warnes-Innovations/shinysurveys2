@@ -92,30 +92,6 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
   print(str(output))
 
   # paste here
-  if ("radiomatrix" %in% survey_env$ordered_question_df$input_type) {
-
-    matrix_ids <- unique(survey_env$ordered_question_df[which(survey_env$ordered_question_df$input_type == "radiomatrix"), "input_id"])$input_id
-
-    matrix_responses <- do.call(rbind,
-                                lapply(
-                                  matrix_ids, function(x) session$input[[x]]
-                                )
-    )
-    output <- rbind(output, matrix_responses)
-    rownames(output) <- NULL
-
-    bounded <- survey_env$ordered_question_df
-    bounded[which(bounded$input_type == "radiomatrix"), "input_id"] <- bounded[which(bounded$input_type == "radiomatrix"), "question"]
-    bounded[which(bounded$input_type == "radiomatrix"),"input_id"] <- vapply(X = bounded[which(bounded$input_type == "radiomatrix"), "input_id"]$input_id, FUN = function(x) {
-      create_radio_input_id(x)}, FUN.VALUE = character(1), USE.NAMES = FALSE)
-    bounded <- bounded[,c("input_id", "input_type", "question_number")]
-    names(bounded) <- c("question_id", "question_type", "question_number")
-
-    output <- merge(output, bounded)
-    output <- output[order(output$question_number), ]
-    output <- output[,-4]
-
-  }
 
 
   if (!is.null(custom_id)) {

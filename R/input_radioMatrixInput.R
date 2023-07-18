@@ -15,10 +15,10 @@ radioMatrixButtons <- function (inputId, choices, selected = NULL) {
 
     inputTag <-  shiny::tags$td(shiny::tags$input(type = "radio", name = inputId, value = value))
 
-    # Undo this comment
-    #if (value %in% selected) {
-     # inputTag$attribs$checked <- "checked"
-    #}
+    # This does not fix selection issue
+    if (value %in% selected) {
+      inputTag$attribs$checked <- "checked"
+    }
 
     inputTag
   })

@@ -110,14 +110,12 @@ surveyOutput_individual <- function(df) {
   else if(inputType == "radiomatrix"){
     required_matrix <- ifelse(all(df$required), TRUE, FALSE)
 
-    output <-
-      radioMatrixInput(
-        inputId = base::unique(df$input_id),
-        responseItems = splitter(str_split(df$option,"/")[[1]][1]),
-        choices = splitter(str_split(df$option,"/")[[1]][2]),
-        selected = NULL,
-        .required = required_matrix
-      )
+
+    output <- shinyRadioMatrix::radioMatrixInput(base::unique(df$input_id),
+                                       rowIDs = splitter(str_split(df$option,"/")[[1]][1]),
+                                       rowLLabels = rep("",length(splitter(str_split(df$option,"/")[[1]][1]))),
+                                       choices = splitter(str_split(df$option,"/")[[1]][2]),
+                                       rowIDsName="")
   }
 # End Insert ========
   else if (inputType == "instructions") {
