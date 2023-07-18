@@ -65,8 +65,8 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
   #print(str(survey_env$unique_questions))
 
   survey_env$ordered_question_df <- do.call(rbind, survey_env$unique_questions)
-  #print("ordered df")
- # print(str(survey_env$ordered_question_df))
+  print("ordered df")
+  print(str(survey_env$ordered_question_df))
 
   shown_subset <- survey_env$ordered_question_df[which(survey_env$ordered_question_df$input_id %in% shown_questions),]
   shown_input_types <- do.call(rbind,
@@ -81,15 +81,15 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
                           data.frame(response = check_length(.input = session$input[[x]]))
                         }
                       ))
-  #print("responses")
-  #print(str(responses))
+  print("responses")
+  print(str(responses))
 
   output <- make_survey_response_df(.question_id = shown_questions,
                                     .question_type = shown_input_types,
                                     .response = responses)
 
-  #print("output")
-  #print(str(output))
+  print("output")
+  print(str(output))
 
   # paste here
 
@@ -126,6 +126,8 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
 
 
   ordered_df <- survey_env$ordered_question_df
+  print("ordered df 2")
+  print(str(ordered_df))
 
 
   if(nrow(output)>0)
@@ -133,6 +135,7 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
     for(i in 1:nrow(output))
     {
       if(output$question_type[i] == "matrix")
+      #if(output$question_type[i] %in% c("matrix", "radiomatrix"))
       {
         myid <- output$question_id[i]
 
