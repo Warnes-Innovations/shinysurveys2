@@ -120,7 +120,7 @@ surveyOutput_individual <- function(df) {
     # So each row of radio matrix has unique ID
 
     output <- shinyRadioMatrix::radioMatrixInput(base::unique(df$input_id),                           
-                                       label = addRequiredUI_internal(df),
+                                       # label = addRequiredUI_internal(df),
                                        rowIDs = as.numeric(s3):(as.numeric(s3) + length(s1) - 1),
                                        rowLLabels = s1,
                                        choices = s2,
