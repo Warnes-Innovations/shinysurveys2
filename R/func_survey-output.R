@@ -123,8 +123,12 @@ surveyOutput_individual <- function(df) {
                                        rowIDs = as.numeric(s3):(as.numeric(s3) + length(s1) - 1),
                                        rowLLabels = s1,
                                        choices = s2,
+                                       selected = NULL,
+                                       choiceNames = NULL,
+                                       choiceValues = NULL,
                                        rowIDsName="",
-                                       verbatimTextOutput('debug01'))
+                                       labelsWidth = list(NULL, NULL),
+                                       label = addRequiredUI_internal(df))
   }
 # End Insert ========
   else if (inputType == "instructions") {
