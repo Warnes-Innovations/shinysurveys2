@@ -6,6 +6,7 @@
 #' @return UI Code for a Shiny App.
 #'
 # == Insert
+library(shinyRadioMatrix)
 splitter <- function(text){
   sapply(str_split(text, ","),str_trim) %>% as.vector()
 }
@@ -128,7 +129,7 @@ surveyOutput_individual <- function(df) {
                                        selected = NULL,
                                        choiceNames = NULL,
                                        choiceValues = NULL,
-                                       rowIDsName=addRequiredUI_internal(df),
+                                       rowIDsName="Grade",
                                        labelsWidth = list(NULL, NULL))
   }
 # End Insert ========
