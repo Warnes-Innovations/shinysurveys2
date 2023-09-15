@@ -124,6 +124,7 @@ surveyOutput_individual <- function(df) {
                                        label = addRequiredUI_internal(df),
                                        rowIDs = as.numeric(s3):(as.numeric(s3) + length(s1) - 1),
                                        rowLLabels = s1,
+                                       rowRLabels = NULL,
                                        choices = s2,
                                        selected = NULL,
                                        choiceNames = NULL,
