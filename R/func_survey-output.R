@@ -110,7 +110,6 @@ surveyOutput_individual <- function(df) {
   }
   else if(inputType == "radiomatrix"){
     required_matrix <- ifelse(all(df$required), TRUE, FALSE)
-    label = addRequiredUI_internal(df),
     #rowlabels
     s1 <- splitter(str_split(df$option,"/")[[1]][1])
     #choices
@@ -120,7 +119,8 @@ surveyOutput_individual <- function(df) {
     # For IDs, create sequence starting from s3 of length equal to s1 length.
     # So each row of radio matrix has unique ID
 
-    output <- shinyRadioMatrix::radioMatrixInput(base::unique(df$input_id),
+    output <- shinyRadioMatrix::radioMatrixInput(base::unique(df$input_id),                           
+                                       label = addRequiredUI_internal(df),
                                        rowIDs = as.numeric(s3):(as.numeric(s3) + length(s1) - 1),
                                        rowLLabels = s1,
                                        choices = s2,
