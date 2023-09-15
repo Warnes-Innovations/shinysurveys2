@@ -6,7 +6,7 @@
 #' @return UI Code for a Shiny App.
 #'
 # == Insert
-library(shinyRadioMatrix)
+# library(shinyRadioMatrix)
 splitter <- function(text){
   sapply(str_split(text, ","),str_trim) %>% as.vector()
 }
