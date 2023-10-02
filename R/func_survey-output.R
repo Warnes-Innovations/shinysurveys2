@@ -120,7 +120,7 @@ surveyOutput_individual <- function(df) {
     s3 <-  splitter(str_split(df$option,"/")[[1]][3])
     # For IDs, create sequence starting from s3 of length equal to s1 length.
     # So each row of radio matrix has unique ID
-    print(df)
+    print("Radio Matrix dataframe: ",df)
     output <- shinyRadioMatrix::radioMatrixInput(
                                        inputId = base::unique(df$input_id),
                                        rowIDs = as.numeric(s3):(as.numeric(s3) + length(s1) - 1),
