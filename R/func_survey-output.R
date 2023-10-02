@@ -224,6 +224,8 @@ surveyOutput <- function(df, survey_title, survey_description, theme = "#63B8FF"
   survey_env$theme <- theme
   survey_env$question_df <- df
   survey_env$unique_questions <- listUniqueQuestions(df)
+  print("Unique questions:")
+  print(survey_env$unique_questions)
   if (!missing(survey_title)) {
     survey_env$title <- survey_title
   }
