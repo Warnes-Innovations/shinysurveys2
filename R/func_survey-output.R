@@ -129,7 +129,7 @@ surveyOutput_individual <- function(df) {
                                        selected = NULL,
                                        choiceNames = NULL,
                                        choiceValues = NULL,
-                                       rowIDsName="Grade",
+                                       rowIDsName="",
                                        labelsWidth = list(NULL, NULL))
 
     output <- shiny::tagList(
