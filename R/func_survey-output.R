@@ -67,6 +67,14 @@ surveyOutput_individual <- function(df) {
         selected = base::character(0),
         choices = df$option
       )
+  } else if (inputType == "multicheckbox") {
+   # Create a checkbox group input for multiple choices
+    output <- shiny::checkboxGroupInput(
+      inputId = base::unique(df$input_id),
+      label = addRequiredUI_internal(df),
+      choices = df$option,
+      selected = NULL
+    )
   } else if (inputType == "text") {
 
     output <-
