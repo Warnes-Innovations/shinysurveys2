@@ -13,7 +13,6 @@ splitter <- function(text){
 # == End Insert
 
 surveyOutput_individual <- function(df) {
-
   inputType <- base::unique(df$input_type)
 
   if (length(inputType) != 1) {
@@ -37,141 +36,148 @@ surveyOutput_individual <- function(df) {
     stop('Ranking input types have been superseded by the "matrix" input type.')
   }
 
-  survey_env$current_question <- df
+  if (!is.na(df$dependence)) {
+      dependence_id <- df$dependence
+      dependence_value <- df$dependence_value
+  
+      # Get the response for the dependent question
+      dependent_response <- response_df[response_df$question_id == dependence_id, "response"]
+  
+      if (is.na(dependence_value)) {
+        # Handle cases where dependence_value is NA, meaning any non-empty response triggers the dependent question
+        has_response <- sum(!is.na(dependent_response) & dependent_response != "") > 0
+      } else {
+        # Handle cases where a specific value triggers the dependent question
+        has_response <- sum(dependent_response == dependence_value) > 0
+      }
+  }
+  else {
+    has_response <- TRUE
+  }
+  output <- NULL
 
-  if (inputType ==  "select") {
-    output <-
-      shiny::selectizeInput(
+  survey_env$current_question <- df
+  if(has_response){
+    if (inputType ==  "select") {
+      output <-
+        shiny::selectizeInput(
+          inputId = base::unique(df$input_id),
+          label = addRequiredUI_internal(df),
+          choices = df$option,
+          options = list(
+            placeholder = '',
+            onInitialize = I('function() { this.setValue(""); }')
+          )
+        )
+    } else if (inputType == "numeric") {
+      output <-
+        numberInput(
+          inputId = base::unique(df$input_id),
+          label = addRequiredUI_internal(df),
+          placeholder = df$option
+        )
+  
+    } else if (inputType == "mc") {
+  
+      output <-
+        shiny::radioButtons(
+          inputId = base::unique(df$input_id),
+          label = addRequiredUI_internal(df),
+          selected = base::character(0),
+          choices = df$option
+        )
+    } else if (inputType == "multicheckbox") {
+     # Create a checkbox group input for multiple choices
+      output <- shiny::checkboxGroupInput(
         inputId = base::unique(df$input_id),
         label = addRequiredUI_internal(df),
         choices = df$option,
-        options = list(
-          placeholder = '',
-          onInitialize = I('function() { this.setValue(""); }')
+        selected = NULL
+      )
+    } else if (inputType == "text") {
+  
+      output <-
+        shiny::textInput(inputId = base::unique(df$input_id),
+                         label = addRequiredUI_internal(df),
+                         placeholder = df$option)
+  
+    } else if (inputType == "y/n") {
+  
+      output <-
+        shiny::radioButtons(
+          inputId = base::unique(df$input_id),
+          label = addRequiredUI_internal(df),
+          selected = base::character(0),
+          choices = df$option
         )
-      )
-  } else if (inputType == "numeric") {
-    output <-
-      numberInput(
-        inputId = base::unique(df$input_id),
-        label = addRequiredUI_internal(df),
-        placeholder = df$option
-      )
-
-  } else if (inputType == "mc") {
-
-    output <-
-      shiny::radioButtons(
-        inputId = base::unique(df$input_id),
-        label = addRequiredUI_internal(df),
-        selected = base::character(0),
-        choices = df$option
-      )
-  } else if (inputType == "multicheckbox") {
-   # Create a checkbox group input for multiple choices
-    output <- shiny::checkboxGroupInput(
-      inputId = base::unique(df$input_id),
-      label = addRequiredUI_internal(df),
-      choices = df$option,
-      selected = NULL
-    )
-  } else if (inputType == "text") {
-
-    output <-
-      shiny::textInput(inputId = base::unique(df$input_id),
-                       label = addRequiredUI_internal(df),
-                       placeholder = df$option)
-
-  } else if (inputType == "y/n") {
-
-    output <-
-      shiny::radioButtons(
-        inputId = base::unique(df$input_id),
-        label = addRequiredUI_internal(df),
-        selected = base::character(0),
-        choices = df$option
-      )
- # Insert ========
-  } else if (inputType == "matrix") {
-
-    required_matrix <- ifelse(all(df$required), TRUE, FALSE)
-
-    #output <-
-      #radioMatrixInput(
-        #inputId = base::unique(df$input_id),
-        #responseItems = base::unique(df$question),
-        #choices = base::unique(df$option),
-        #selected = NULL,
-        #.required = required_matrix
-      #)
-    output <- matrixInput(
-      # Comment
-        inputId = base::unique(df$input_id),
-        label = addRequiredUI_internal(df),
-        value = matrix("",
-                               nrow=length(splitter(str_split(df$option,"/")[[1]][1])),
-                               ncol=length(splitter(str_split(df$option,"/")[[1]][2])),
-                               dimnames = list(splitter(str_split(df$option,"/")[[1]][1]),
-                                               splitter(str_split(df$option,"/")[[1]][2]))
+   # Insert ========
+    } else if (inputType == "matrix") {
+  
+      required_matrix <- ifelse(all(df$required), TRUE, FALSE)
+  
+      #output <-
+        #radioMatrixInput(
+          #inputId = base::unique(df$input_id),
+          #responseItems = base::unique(df$question),
+          #choices = base::unique(df$option),
+          #selected = NULL,
+          #.required = required_matrix
+        #)
+      output <- matrixInput(
+        # Comment
+          inputId = base::unique(df$input_id),
+          label = addRequiredUI_internal(df),
+          value = matrix("",
+                                 nrow=length(splitter(str_split(df$option,"/")[[1]][1])),
+                                 ncol=length(splitter(str_split(df$option,"/")[[1]][2])),
+                                 dimnames = list(splitter(str_split(df$option,"/")[[1]][1]),
+                                                 splitter(str_split(df$option,"/")[[1]][2]))
+          )
         )
+  
+    }
+    else if(inputType == "radiomatrix"){
+      required_matrix <- ifelse(all(df$required), TRUE, FALSE)
+      question_prompt <- addRequiredUI_internal(df)
+      #rowlabels
+      s1 <- splitter(str_split(df$option,"/")[[1]][1])
+      #choices
+      s2 <- splitter(str_split(df$option,"/")[[1]][2])
+      #row IDs
+      s3 <-  splitter(str_split(df$option,"/")[[1]][3])
+      # For IDs, create sequence starting from s3 of length equal to s1 length.
+      # So each row of radio matrix has unique ID
+      output <- shinyRadioMatrix::radioMatrixInput(
+                                         inputId = base::unique(df$input_id),
+                                         rowIDs = as.numeric(s3):(as.numeric(s3) + length(s1) - 1),
+                                         rowLLabels = s1,
+                                         rowRLabels = NULL,
+                                         choices = s2,
+                                         selected = NULL,
+                                         choiceNames = NULL,
+                                         choiceValues = NULL,
+                                         rowIDsName="",
+                                         labelsWidth = list(NULL, NULL))
+  
+      output <- shiny::tagList(
+        shiny::div(class = "question-prompt", question_prompt),
+        output
       )
-
-  }
-  else if(inputType == "radiomatrix"){
-    required_matrix <- ifelse(all(df$required), TRUE, FALSE)
-    question_prompt <- addRequiredUI_internal(df)
-    #rowlabels
-    s1 <- splitter(str_split(df$option,"/")[[1]][1])
-    #choices
-    s2 <- splitter(str_split(df$option,"/")[[1]][2])
-    #row IDs
-    s3 <-  splitter(str_split(df$option,"/")[[1]][3])
-    # For IDs, create sequence starting from s3 of length equal to s1 length.
-    # So each row of radio matrix has unique ID
-    output <- shinyRadioMatrix::radioMatrixInput(
-                                       inputId = base::unique(df$input_id),
-                                       rowIDs = as.numeric(s3):(as.numeric(s3) + length(s1) - 1),
-                                       rowLLabels = s1,
-                                       rowRLabels = NULL,
-                                       choices = s2,
-                                       selected = NULL,
-                                       choiceNames = NULL,
-                                       choiceValues = NULL,
-                                       rowIDsName="",
-                                       labelsWidth = list(NULL, NULL))
-
-    output <- shiny::tagList(
-      shiny::div(class = "question-prompt", question_prompt),
-      output
-    )
-  }
-# End Insert ========
-  else if (inputType == "instructions") {
-
-    output <- shiny::div(
-      class = "instructions-only",
-      shiny::markdown(df$question)
-    )
-
-  } else if (inputType %in% survey_env$input_type) {
-    output <- eval(survey_env$input_extension[[inputType]])
-  } else {
-    stop(paste0("Input type '", inputType, "' from the supplied data frame of questions is not recognized by {shinysurveys}.
-                Did you mean to register a custom input extension with `extendInputType()`?"))
-  }
-
-  if (!base::is.na(df$dependence[1])) {
-    output <- shiny::div(class = "questions dependence",
-                         id = paste0(df$input_id[1], "-question"),
-                         shiny::div(class = "question-input",
-                                    instructions,
-                                    output))
-  } else if (base::is.na(df$dependence[1])) {
-    output <- shiny::div(class = "questions",
-                         id = paste0(df$input_id[1], "-question"),
-                         shiny::div(class = "question-input",
-                                    instructions,
-                                    output))
+    }
+  # End Insert ========
+    else if (inputType == "instructions") {
+  
+      output <- shiny::div(
+        class = "instructions-only",
+        shiny::markdown(df$question)
+      )
+  
+    } else if (inputType %in% survey_env$input_type) {
+      output <- eval(survey_env$input_extension[[inputType]])
+    } else {
+      stop(paste0("Input type '", inputType, "' from the supplied data frame of questions is not recognized by {shinysurveys}.
+                  Did you mean to register a custom input extension with `extendInputType()`?"))
+    }
   }
 
   return(output)
