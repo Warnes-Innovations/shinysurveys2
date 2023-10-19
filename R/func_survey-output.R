@@ -39,7 +39,10 @@ surveyOutput_individual <- function(df) {
   if (!is.na(df$dependence)) {
       dependence_id <- df$dependence
       dependence_value <- df$dependence_value
-  
+      temp <- read_sheet(URL(), "survey_responses")
+      id <- ifelse(nrow(temp) == 0, 1, max(temp$subject_id) + 1)
+      response_df <- getSurveyData(id)
+      print("In individual function")
       # Get the response for the dependent question
       dependent_response <- response_df[response_df$question_id == dependence_id, "response"]
   
@@ -184,59 +187,7 @@ surveyOutput_individual <- function(df) {
 
 }
 
-
-#' Generate the UI Code for demographic questions
-#'
-#' Create the UI code for a Shiny app based on user-supplied questions.
-#'
-#' @param df A user supplied data frame in the format of teaching_r_questions.
-#' @param survey_title (Optional) user supplied title for the survey
-#' @param survey_description (Optional) user supplied description for the survey
-#' @param theme A valid R color: predefined such as "red" or "blue"; hex colors
-#'   such as #63B8FF (default). To customize the survey's appearance entirely, supply NULL.
-#' @param ... Additional arguments to pass into \link[shiny]{actionButton} used to submit survey responses.
-#'
-#' @return UI Code for a Shiny App.
-#' @export
-#'
-#' @examples
-#'
-#' if (interactive()) {
-#'
-#'   library(shiny)
-#'   library(shinysurveys)
-#'
-#'   df <- data.frame(question = "What is your favorite food?",
-#'                    option = "Your Answer",
-#'                    input_type = "text",
-#'                    input_id = "favorite_food",
-#'                    dependence = NA,
-#'                    dependence_value = NA,
-#'                    required = F)
-#'
-#'   ui <- fluidPage(
-#'     surveyOutput(df = df,
-#'                  survey_title = "Hello, World!",
-#'                  theme = "#63B8FF")
-#'   )
-#'
-#'   server <- function(input, output, session) {
-#'     renderSurvey()
-#'
-#'     observeEvent(input$submit, {
-#'       showModal(modalDialog(
-#'         title = "Congrats, you completed your first shinysurvey!",
-#'         "You can customize what actions happen when a user finishes a survey using input$submit."
-#'       ))
-#'     })
-#'   }
-#'
-#'   shinyApp(ui, server)
-#'
-#' }
-
-
-surveyOutput <- function(df, survey_title, survey_description, theme = "#63B8FF", ...) {
+surveyOutput <- function(df, url, survey_title, survey_description, theme = "#63B8FF", ...) {
 
   survey_env$theme <- theme
   survey_env$question_df <- df
@@ -252,13 +203,10 @@ surveyOutput <- function(df, survey_title, survey_description, theme = "#63B8FF"
     main_ui <- multipaged_ui(df = df)
   } else if (!"page" %in% names(df)) {
     main_ui <- shiny::tagList(
-      check_survey_metadata(survey_title = survey_title,
-                            survey_description = survey_description),
-      lapply(survey_env$unique_questions, surveyOutput_individual),
+      check_survey_metadata(survey_title = survey_title, survey_description = survey_description),
+      lapply(survey_env$unique_questions, function(df) surveyOutput_individual(df, url)),
       shiny::div(class = "survey-buttons",
-                 shiny::actionButton("submit",
-                                     "Submit",
-                                     ...)
+                 shiny::actionButton("submit", "Submit", ...)
       )
     )
   }
