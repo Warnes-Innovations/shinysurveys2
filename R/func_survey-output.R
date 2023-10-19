@@ -12,7 +12,7 @@ splitter <- function(text){
 }
 # == End Insert
 
-surveyOutput_individual <- function(df) {
+surveyOutput_individual <- function(df,url) {
   inputType <- base::unique(df$input_type)
 
   if (length(inputType) != 1) {
@@ -39,7 +39,7 @@ surveyOutput_individual <- function(df) {
   if (!is.na(df$dependence)) {
       dependence_id <- df$dependence
       dependence_value <- df$dependence_value
-      temp <- read_sheet(URL(), "survey_responses")
+      temp <- read_sheet(url, "survey_responses")
       id <- ifelse(nrow(temp) == 0, 1, max(temp$subject_id) + 1)
       response_df <- getSurveyData(id)
       print("In individual function")
