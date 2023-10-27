@@ -116,9 +116,10 @@ getRequired_internal <- function(questions) {
   )
   print("In Render function")
   print(questions)
-  print(names)
+  print(out)
   names(out) <- "required_id"
-
+  print("After assigning names")
+  print(out)
   out <- out$required_id
 
   return(out)
