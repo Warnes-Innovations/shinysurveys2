@@ -69,7 +69,7 @@ renderSurvey <- function(df, theme = "#63B8FF") {
 
   session <- shiny::getDefaultReactiveDomain()
 
-  # required_vec <- getRequired_internal(survey_env$unique_questions)
+  required_vec <- getRequired_internal(survey_env$unique_questions)
 
   shiny::observe({
 
@@ -82,7 +82,7 @@ renderSurvey <- function(df, theme = "#63B8FF") {
     # Update the dependencies
     for (id in seq_along(survey_env$unique_questions)) showDependence(input = session$input, df = survey_env$unique_questions[[id]])
 
-    # toggle_element(id = "submit", condition = checkRequired_internal(input = session$input, required_inputs_vector = required_vec))
+    toggle_element(id = "submit", condition = checkRequired_internal(input = session$input, required_inputs_vector = required_vec))
 
   })
 
