@@ -61,8 +61,12 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
   for (i in seq_along(survey_env$unique_questions)) {
     survey_env$unique_questions[[i]]$question_number <- rep(i, nrow(survey_env$unique_questions[[i]]))
   }
+  #print("unique questions")
+  #print(str(survey_env$unique_questions))
 
   survey_env$ordered_question_df <- do.call(rbind, survey_env$unique_questions)
+  print("ordered df")
+  print(str(survey_env$ordered_question_df))
 
   shown_subset <- survey_env$ordered_question_df[which(survey_env$ordered_question_df$input_id %in% shown_questions),]
   shown_input_types <- do.call(rbind,
@@ -77,35 +81,18 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
                           data.frame(response = check_length(.input = session$input[[x]]))
                         }
                       ))
+  print("responses")
+  print(str(responses))
 
   output <- make_survey_response_df(.question_id = shown_questions,
                                     .question_type = shown_input_types,
                                     .response = responses)
 
-  if ("matrix" %in% survey_env$ordered_question_df$input_type) {
+  print("output")
+  print(str(output))
 
-    matrix_ids <- unique(survey_env$ordered_question_df[which(survey_env$ordered_question_df$input_type == "matrix"), "input_id"])$input_id
+  # paste here
 
-    matrix_responses <- do.call(rbind,
-                                lapply(
-                                  matrix_ids, function(x) session$input[[x]]
-                                )
-    )
-    output <- rbind(output, matrix_responses)
-    rownames(output) <- NULL
-
-    bounded <- survey_env$ordered_question_df
-    bounded[which(bounded$input_type == "matrix"), "input_id"] <- bounded[which(bounded$input_type == "matrix"), "question"]
-    bounded[which(bounded$input_type == "matrix"),"input_id"] <- vapply(X = bounded[which(bounded$input_type == "matrix"), "input_id"]$input_id, FUN = function(x) {
-      create_radio_input_id(x)}, FUN.VALUE = character(1), USE.NAMES = FALSE)
-    bounded <- bounded[,c("input_id", "input_type", "question_number")]
-    names(bounded) <- c("question_id", "question_type", "question_number")
-
-    output <- merge(output, bounded)
-    output <- output[order(output$question_number), ]
-    output <- output[,-4]
-
-  }
 
   if (!is.null(custom_id)) {
     output <- cbind(subject_id = custom_id,
@@ -115,17 +102,68 @@ getSurveyData <- function(custom_id = NULL, include_dependencies = TRUE, depende
                     output)
   }
 
+
   output <- split(output, factor(output$question_id, levels = unique(output$question_id)))
   output <- do.call(rbind, lapply(
     output, function(x) x[1,]
   ))
   rownames(output) <- NULL
 
+
   if (include_dependencies) {
     output[which(output$question_id %in% session$input$shinysurveysHiddenInputs), "response"] <- dependency_string
   } else if (!include_dependencies) {
     output <- output[which(!output$question_id %in% session$input$shinysurveysHiddenInputs),]
   }
+
+  splitter <- function(text){
+    sapply(str_split(text, ","),str_trim) %>% as.vector()
+  }
+
+  #print("output")
+  #print(output)
+  #print("ordered")
+  #print(survey_env$ordered_question_df)
+
+
+  ordered_df <- survey_env$ordered_question_df
+  print("ordered df 2")
+  print(str(ordered_df))
+
+
+  if(nrow(output)>0)
+  {
+    for(i in 1:nrow(output))
+    {
+      if(output$question_type[i] == "matrix")
+      #if(output$question_type[i] %in% c("matrix", "radiomatrix"))
+      {
+        myid <- output$question_id[i]
+
+
+        # Store id index to access dim info
+        ordered_index <- which(ordered_df$input_id == myid)
+        qrow <- length(splitter(str_split(ordered_df$option[ordered_index],"/")[[1]][1]))
+        qcol <- length(splitter(str_split(ordered_df$option[ordered_index],"/")[[1]][2]))
+
+        splitted <- splitter(output$response[i])
+
+        # replace empty cells with NA
+        empty <- str_trim(splitted) == ""
+        splitted[empty] <- NA
+
+        # format into matrix to then combine
+        M <- matrix(splitted, qrow, qcol, byrow=F)
+        output$response[i] <-paste(apply(M, 1, paste, collapse=","), collapse=";")
+      }
+
+    }
+
+  }
+
+
+
+
 
   return(output)
 

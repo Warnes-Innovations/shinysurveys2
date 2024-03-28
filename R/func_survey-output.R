@@ -5,6 +5,13 @@
 #' @keywords internal
 #' @return UI Code for a Shiny App.
 #'
+# == Insert
+# library(shinyRadioMatrix)
+splitter <- function(text){
+  sapply(str_split(text, ","),str_trim) %>% as.vector()
+}
+# == End Insert
+
 surveyOutput_individual <- function(df) {
 
   inputType <- base::unique(df$input_type)
@@ -44,7 +51,6 @@ surveyOutput_individual <- function(df) {
         )
       )
   } else if (inputType == "numeric") {
-
     output <-
       numberInput(
         inputId = base::unique(df$input_id),
@@ -61,6 +67,14 @@ surveyOutput_individual <- function(df) {
         selected = base::character(0),
         choices = df$option
       )
+  } else if (inputType == "multicheckbox") {
+   # Create a checkbox group input for multiple choices
+    output <- shiny::checkboxGroupInput(
+      inputId = base::unique(df$input_id),
+      label = addRequiredUI_internal(df),
+      choices = df$option,
+      selected = NULL
+    )
   } else if (inputType == "text") {
 
     output <-
@@ -77,21 +91,62 @@ surveyOutput_individual <- function(df) {
         selected = base::character(0),
         choices = df$option
       )
-
+ # Insert ========
   } else if (inputType == "matrix") {
 
     required_matrix <- ifelse(all(df$required), TRUE, FALSE)
 
-    output <-
-      radioMatrixInput(
+    #output <-
+      #radioMatrixInput(
+        #inputId = base::unique(df$input_id),
+        #responseItems = base::unique(df$question),
+        #choices = base::unique(df$option),
+        #selected = NULL,
+        #.required = required_matrix
+      #)
+    output <- matrixInput(
+      # Comment
         inputId = base::unique(df$input_id),
-        responseItems = base::unique(df$question),
-        choices = base::unique(df$option),
-        selected = NULL,
-        .required = required_matrix
+        label = addRequiredUI_internal(df),
+        value = matrix("",
+                               nrow=length(splitter(str_split(df$option,"/")[[1]][1])),
+                               ncol=length(splitter(str_split(df$option,"/")[[1]][2])),
+                               dimnames = list(splitter(str_split(df$option,"/")[[1]][1]),
+                                               splitter(str_split(df$option,"/")[[1]][2]))
+        )
       )
 
-  } else if (inputType == "instructions") {
+  }
+  else if(inputType == "radiomatrix"){
+    required_matrix <- ifelse(all(df$required), TRUE, FALSE)
+    question_prompt <- addRequiredUI_internal(df)
+    #rowlabels
+    s1 <- splitter(str_split(df$option,"/")[[1]][1])
+    #choices
+    s2 <- splitter(str_split(df$option,"/")[[1]][2])
+    #row IDs
+    s3 <-  splitter(str_split(df$option,"/")[[1]][3])
+    # For IDs, create sequence starting from s3 of length equal to s1 length.
+    # So each row of radio matrix has unique ID
+    output <- shinyRadioMatrix::radioMatrixInput(
+                                       inputId = base::unique(df$input_id),
+                                       rowIDs = as.numeric(s3):(as.numeric(s3) + length(s1) - 1),
+                                       rowLLabels = s1,
+                                       rowRLabels = NULL,
+                                       choices = s2,
+                                       selected = NULL,
+                                       choiceNames = NULL,
+                                       choiceValues = NULL,
+                                       rowIDsName="",
+                                       labelsWidth = list(NULL, NULL))
+
+    output <- shiny::tagList(
+      shiny::div(class = "question-prompt", question_prompt),
+      output
+    )
+  }
+# End Insert ========
+  else if (inputType == "instructions") {
 
     output <- shiny::div(
       class = "instructions-only",
@@ -193,12 +248,7 @@ surveyOutput <- function(df, survey_title, survey_description, theme = "#63B8FF"
     main_ui <- shiny::tagList(
       check_survey_metadata(survey_title = survey_title,
                             survey_description = survey_description),
-      lapply(survey_env$unique_questions, surveyOutput_individual),
-      shiny::div(class = "survey-buttons",
-                 shiny::actionButton("submit",
-                                     "Submit",
-                                     ...)
-      )
+      lapply(survey_env$unique_questions, surveyOutput_individual)
     )
   }
 
