@@ -28,7 +28,7 @@ addRequiredUI_internal <- function(df) {
 
 #' Toggle element state
 #'
-#' Custom function for toggling enable/disable state of HTML element in {shinysurveys}.
+#' Custom function for toggling enable/disable state of HTML element in {shinysurveys2}.
 #'
 #' @param id Shiny object inputId
 #' @param condition Condition on which to enable or disable

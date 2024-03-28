@@ -1,8 +1,8 @@
 ---
-title: "Extending shinysurveys with Custom Input Types"
+title: "Extending shinysurveys2 with Custom Input Types"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Extending shinysurveys with Custom Input Types}
+  %\VignetteIndexEntry{Extending shinysurveys2 with Custom Input Types}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,25 +12,25 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-library(shinysurveys)
+library(shinysurveys2)
 library(tibble)
 ```
 
-> Note: This is a pared down version of an article originally posted on [my personal blog](https://www.jdtrat.com/blog/extending-shinysurveys/). I plan to update documentation there more regularly than in the vignettes.
+> Note: This is a pared down version of an article originally posted on [my personal blog](https://www.Warnes-Innovations.com/blog/extending-shinysurveys2/). I plan to update documentation there more regularly than in the vignettes.
 
 # Motivation
 
-The original idea for {shinysurveys} was to provide a select set of
+The original idea for {shinysurveys2} was to provide a select set of
 well-supported input types that are commonly used with surveys. However,
 shortly after the package was published on CRAN, additional input types
 were requested (see GitHub [issue
-\#6](https://github.com/jdtrat/shinysurveys/issues/6) or
-[\#18](https://github.com/jdtrat/shinysurveys/issues/18)).
+\#6](https://github.com/Warnes-Innovations/shinysurveys2/issues/6) or
+[\#18](https://github.com/Warnes-Innovations/shinysurveys2/issues/18)).
 
 In order to make the package as light-weight as possible (minimize
 dependence on external code), I did not wish to implement any input
 types not native to {shiny}. I also did not want to rewrite the
-internals of {shinysurveys} whenever a new input-type was requested. As
+internals of {shinysurveys2} whenever a new input-type was requested. As
 a solution, I developed a framework for custom inputs to allow users to
 include different input types that meet their use case. In the next
 section, I outline two examples of how to add custom input types.
@@ -41,14 +41,14 @@ section, I outline two examples of how to add custom input types.
 
 Consider the question "On a scale from 1-10, how much do you love
 sushi?". An ideal input type would be {shiny}'s `sliderInput`. However,
-this is not natively supported by {shinysurveys} as the slider input
+this is not natively supported by {shinysurveys2} as the slider input
 requires multiple arguments, including a minimum, maximum, and starting
 value. To get around this, we can define a new input type using a new
 function `extendInputType()`. As in a typical shiny survey, we can
 define our question as follows:
 
 ```{r define-question}
-# Define a question as normal with the `input_type` set to "slider", which is not natively supported by {shinysurveys}.
+# Define a question as normal with the `input_type` set to "slider", which is not natively supported by {shinysurveys2}.
 
 slider_question <- data.frame(
   question = "On a scale from 1-10, how much do you love sushi?",
@@ -69,11 +69,11 @@ slider_question
 
 If we try to define the user-interface component of the shiny
 application, we will get the following error which most commonly occurs
-when {shinysurveys} doesn't recognize an input type.
+when {shinysurveys2} doesn't recognize an input type.
 
 ```{r demo-slider-without-extension, error = TRUE}
 library(shiny)
-library(shinysurveys)
+library(shinysurveys2)
 
 ui <- fluidPage(
   surveyOutput(df = slider_question,
@@ -89,7 +89,7 @@ Consider:
 
 ```{r extend-input-type-slider}
 
-# Register a slider input to {shinysurveys} with a custom minimum and maximum value.
+# Register a slider input to {shinysurveys2} with a custom minimum and maximum value.
 
 extendInputType(input_type = "slider", {
   shiny::sliderInput(
@@ -127,16 +127,16 @@ When running the full application, we see the following survey:
 ## Adding a `dateInput`
 
 As requested in issue
-[\#18](https://github.com/jdtrat/shinysurveys/issues/18), a user needed
+[\#18](https://github.com/Warnes-Innovations/shinysurveys2/issues/18), a user needed
 a `dateInput` with special restrictions for possible values (dates).
 [The user's
-reprex](https://github.com/jdtrat/shinysurveys/issues/18#issue-856073749)
-showed the error we saw earlier, because {shinysurveys} does not
+reprex](https://github.com/Warnes-Innovations/shinysurveys2/issues/18#issue-856073749)
+showed the error we saw earlier, because {shinysurveys2} does not
 natively support "date" inputs. Consider again the following question:
 
 ```{r define-date-question}
 
-# Define a question as normal with the `input_type` set to "date", which is not natively supported by {shinysurveys}.
+# Define a question as normal with the `input_type` set to "date", which is not natively supported by {shinysurveys2}.
 date_question <- data.frame(
   question = "When do you graduate?",
   option = NA,
@@ -156,12 +156,12 @@ date_question
 
 As in the slider example, if we try to define the user-interface
 component of the shiny application, we will get the following error
-which most commonly occurs when {shinysurveys} doesn't recognize an
+which most commonly occurs when {shinysurveys2} doesn't recognize an
 input type.
 
 ```{r demo-date-without-extension, error = TRUE}
 library(shiny)
-library(shinysurveys)
+library(shinysurveys2)
 
 ui <- fluidPage(
   surveyOutput(df = date_question,
@@ -174,7 +174,7 @@ Using `extendInputType()` we can overcome this.
 
 ```{r extend-input-type-date}
 
-# Register a date input to {shinysurveys}, limiting possible dates to a twenty-day period.
+# Register a date input to {shinysurveys2}, limiting possible dates to a twenty-day period.
 
 extendInputType("date", {
   shiny::dateInput(

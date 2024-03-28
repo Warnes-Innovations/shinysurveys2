@@ -1,7 +1,7 @@
 
 #' Server code for adding survey questions
 #'
-#' Include server-side logic for shinysurveys.
+#' Include server-side logic for shinysurveys2.
 #'
 #'
 #' @param df **Deprecated** *please only place argument in
@@ -22,7 +22,7 @@
 #' if (interactive()) {
 #'
 #'   library(shiny)
-#'   library(shinysurveys)
+#'   library(shinysurveys2)
 #'
 #'   df <- data.frame(question = "What is your favorite food?",
 #'                    option = "Your Answer",

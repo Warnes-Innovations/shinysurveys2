@@ -3,7 +3,7 @@
 #' Get a participant's responses.
 #'
 #' @param custom_id A unique identifier for the survey's respondents. NULL by
-#'   default, and the built-in {shinysurveys} userID will be used.
+#'   default, and the built-in {shinysurveys2} userID will be used.
 #' @param include_dependencies LOGICAL: TRUE (default) and all dependency
 #'   questions will be returned, regardless of if the individual respondent saw
 #'   it. For respondents who did not see a specific question, the 'response'
@@ -15,7 +15,7 @@
 #'
 #' @return A data frame with four columns containing information about the
 #'   participant's survey responses: The 'subject_id' column can be used for
-#'   identifying respondents. By default, it utilizes shinysurveys URL-based
+#'   identifying respondents. By default, it utilizes shinysurveys2 URL-based
 #'   user tracking feature. The 'question_id' and 'question_type' columns
 #'   correspond to  'input_id' and 'input_type' from the original data frame of
 #'   questions. The 'response' column is the participant's answer.

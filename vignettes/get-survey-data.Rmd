@@ -15,14 +15,14 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, include = FALSE}
-library(shinysurveys)
+library(shinysurveys2)
 ```
 
 # Introduction
 
-shinysurveys was developed, in large part, to automate data collection and analysis. In this vignette, I demonstrate the use of `getSurveyData()` to easily aggregate survey responses and help you, the designer, more quickly gain insights of the results. The output always follows the same structure, inspired by tidy data, where each row is an observation (question) and each column is a variable.
+shinysurveys2 was developed, in large part, to automate data collection and analysis. In this vignette, I demonstrate the use of `getSurveyData()` to easily aggregate survey responses and help you, the designer, more quickly gain insights of the results. The output always follows the same structure, inspired by tidy data, where each row is an observation (question) and each column is a variable.
 
-The 'subject_id' column can be used for identifying respondents. By default, it utilizes shinysurveys [URL-based user tracking feature](https://shinysurveys.jdtrat.com/articles/surveying-shinysurveys.html#user-tracking).[^1] The 'question_id' and 'question_type' columns correspond to 'input_id' and 'input_type' from the original data frame of questions. The 'response' column is the participant's answer.
+The 'subject_id' column can be used for identifying respondents. By default, it utilizes shinysurveys2 [URL-based user tracking feature](https://shinysurveys2.Warnes-Innovations.com/articles/surveying-shinysurveys2.html#user-tracking).[^1] The 'question_id' and 'question_type' columns correspond to 'input_id' and 'input_type' from the original data frame of questions. The 'response' column is the participant's answer.
 
 [^1]: Alternative IDs can be supplied with the `custom_id` argument, however. For example, `getSurveyData(custom_id = input$name)` would save 'subject_id' as a participant's name -- "JT" in this case.
 
@@ -38,7 +38,7 @@ A "Submit" button is built into any shiny survey, but -- by default -- no action
 
 # Load packages
 library(shiny)
-library(shinysurveys)
+library(shinysurveys2)
 
 # Define questions in the format of a shinysurvey
 survey_questions <- data.frame(
@@ -89,12 +89,12 @@ When I answer the survey and click submit, the following data frame is printed t
 
 In order to generalize `getSurveyData()`, it has to account for input types that may return multiple values. For example, shiny's `checkboxGroupInput` returns a character vector whose values correspond to the checked boxes. In order to ensure that this, and other custom input extensions,[^3] work with `getSurveyData()`, I collapse responses into a single character vector separated by commas. Consider the following application:
 
-[^3]: If you are unfamiliar with custom input types, please see [my blog post](https://www.jdtrat.com/blog/extending-shinysurveys/) introducing them or the [documentation](https://shinysurveys.jdtrat.com/articles/custom-input-extensions.html).
+[^3]: If you are unfamiliar with custom input types, please see [my blog post](https://www.Warnes-Innovations.com/blog/extending-shinysurveys2/) introducing them or the [documentation](https://shinysurveys2.Warnes-Innovations.com/articles/custom-input-extensions.html).
 
 ```{r complex-example, eval = FALSE}
 # Load packages
 library(shiny)
-library(shinysurveys)
+library(shinysurveys2)
 
 # Register a "check" input type
 extendInputType("check", {
@@ -164,7 +164,7 @@ It can be created with the following code:
 
 # Load packages
 library(shiny)
-library(shinysurveys)
+library(shinysurveys2)
 
 # Define questions in the format of a shinysurvey
 dep_questions <- tail(teaching_r_questions, 12)
@@ -224,6 +224,6 @@ In contrast, if I answered "Yes" to the first question, then my data would look 
 
 # Conclusion
 
-In this vignette, I highlighted the use of `getSurveyData()` to easily aggregate survey responses. I hope you find this feature as useful as I have! It is especially powerful when implementing data collection and analysis pipelines. As a necessary disclaimer, *please test this on your survey before using it in a deployed application*. Although I have tested `getSurveyData()` in a variety of situations, I have not exhausted all custom input types and you may run into errors. If that happens, please file a [GitHub Issue](https://github.com/jdtrat/shinysurveys/issues) with a minimal app to reproduce the bug.
+In this vignette, I highlighted the use of `getSurveyData()` to easily aggregate survey responses. I hope you find this feature as useful as I have! It is especially powerful when implementing data collection and analysis pipelines. As a necessary disclaimer, *please test this on your survey before using it in a deployed application*. Although I have tested `getSurveyData()` in a variety of situations, I have not exhausted all custom input types and you may run into errors. If that happens, please file a [GitHub Issue](https://github.com/Warnes-Innovations/shinysurveys2/issues) with a minimal app to reproduce the bug.
 
 Thanks for reading, and happy surveying!

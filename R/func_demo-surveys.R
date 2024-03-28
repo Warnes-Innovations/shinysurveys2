@@ -15,7 +15,7 @@
 demo_survey <- function(theme = "#63B8FF") {
 
   ui <- shiny::fluidPage(
-        surveyOutput(shinysurveys::teaching_r_questions,
+        surveyOutput(shinysurveys2::teaching_r_questions,
                      survey_title = "A survey title",
                      survey_description = "A description that is longer than the title.",
                      theme = theme)
@@ -58,7 +58,7 @@ demo_survey <- function(theme = "#63B8FF") {
 #'
 demo_survey_multipage <- function(theme = "#63B8FF") {
 
-  data <- transform(shinysurveys::teaching_r_questions,
+  data <- transform(shinysurveys2::teaching_r_questions,
                     page = c(rep("intro", 12), rep("mid", 30), rep("finale", 12))
                     )
 

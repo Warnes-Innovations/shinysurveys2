@@ -87,7 +87,7 @@ surveyOptions <- function() {
 #' Add Custom Input Types for a Survey
 #'
 #' @param input_type A string of the input type supplied in the data frame of questions.
-#' @param extension A shiny input type not natively supported by {shinysurveys}. See the examples section for more information.
+#' @param extension A shiny input type not natively supported by {shinysurveys2}. See the examples section for more information.
 #'
 #' @return NA; used to register custom input types for use with a shiny survey.
 #' @export
@@ -96,7 +96,7 @@ surveyOptions <- function() {
 #' @seealso \code{\link{surveyLabel}}
 #' @examples
 #'
-#' # Register a slider input to {shinysurveys} with a custom minimum and maximum value.
+#' # Register a slider input to {shinysurveys2} with a custom minimum and maximum value.
 #'
 #' extendInputType("slider", {
 #'   shiny::sliderInput(
@@ -134,7 +134,7 @@ surveyOptions <- function() {
 #'
 #'
 #'
-#' # Register a date input to {shinysurveys},
+#' # Register a date input to {shinysurveys2},
 #' # limiting possible dates to a twenty-day period.
 #'
 #' extendInputType("date", {
@@ -199,8 +199,8 @@ extendInputType <- function(input_type, extension) {
     survey_env$input_extension[[input_type]] <- substitute(extension)
   }
 
-  message(paste0("Input Type \"", input_type,"\" registered with {shinysurveys}. If the session restarts, you will need to re-register it.\n",
-                 "To see all registered input extensions, please call `shinysurveys::listInputExtensions()`."))
+  message(paste0("Input Type \"", input_type,"\" registered with {shinysurveys2}. If the session restarts, you will need to re-register it.\n",
+                 "To see all registered input extensions, please call `shinysurveys2::listInputExtensions()`."))
 }
 
 #' List all registered survey extensions
@@ -212,7 +212,7 @@ extendInputType <- function(input_type, extension) {
 #'
 #' if (interactive()) {
 #'
-#'   # Register a date input to {shinysurveys},
+#'   # Register a date input to {shinysurveys2},
 #'   # limiting possible dates to a twenty-day period.
 #'
 #'   extendInputType("slider", {
@@ -225,7 +225,7 @@ extendInputType <- function(input_type, extension) {
 #'       )
 #'     })
 #'
-#'   # Register a slider input to {shinysurveys}
+#'   # Register a slider input to {shinysurveys2}
 #'   # with a custom minimum and maximum value.
 #'
 #'   extendInputType("date", {

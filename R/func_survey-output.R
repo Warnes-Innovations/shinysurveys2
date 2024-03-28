@@ -101,7 +101,7 @@ surveyOutput_individual <- function(df) {
   } else if (inputType %in% survey_env$input_type) {
     output <- eval(survey_env$input_extension[[inputType]])
   } else {
-    stop(paste0("Input type '", inputType, "' from the supplied data frame of questions is not recognized by {shinysurveys}.
+    stop(paste0("Input type '", inputType, "' from the supplied data frame of questions is not recognized by {shinysurveys2}.
                 Did you mean to register a custom input extension with `extendInputType()`?"))
   }
 
@@ -143,7 +143,7 @@ surveyOutput_individual <- function(df) {
 #' if (interactive()) {
 #'
 #'   library(shiny)
-#'   library(shinysurveys)
+#'   library(shinysurveys2)
 #'
 #'   df <- data.frame(question = "What is your favorite food?",
 #'                    option = "Your Answer",
@@ -207,7 +207,7 @@ surveyOutput <- function(df, survey_title, survey_description, theme = "#63B8FF"
       list(color = survey_env$theme),
       readLines(
         system.file("render_survey.scss",
-                    package = "shinysurveys")
+                    package = "shinysurveys2")
       )
     ))
   } else if (is.null(survey_env$theme)) {
@@ -215,10 +215,10 @@ surveyOutput <- function(df, survey_title, survey_description, theme = "#63B8FF"
   }
 
 
-  shiny::tagList(shiny::includeScript(system.file("shinysurveys-js.js",
-                                                  package = "shinysurveys")),
+  shiny::tagList(shiny::includeScript(system.file("shinysurveys2-js.js",
+                                                  package = "shinysurveys2")),
                  shiny::includeScript(system.file("save_data.js",
-                                                  package = "shinysurveys")),
+                                                  package = "shinysurveys2")),
                  shiny::tags$style(shiny::HTML(survey_style)),
                  shiny::div(class = "survey",
                             shiny::div(style = "display: none !important;",

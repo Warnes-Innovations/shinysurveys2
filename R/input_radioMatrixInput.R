@@ -99,7 +99,7 @@ radioBody <- function(.responseItems, .choices, .selected = NULL) {
 #' @param responseItems The questions to be asked (row labels)
 #' @param choices Possible choices (column labels)
 #' @param selected Initial selected value
-#' @param ... Additional arguments specific to {shinysurveys} required questions.
+#' @param ... Additional arguments specific to {shinysurveys2} required questions.
 #'
 #' @return A matrix of radio buttons that can be added to a UI definition. When
 #'   run in a Shiny application, this will return \code{NULL} until all possible
@@ -132,7 +132,7 @@ radioBody <- function(.responseItems, .choices, .selected = NULL) {
 #'
 #' }
 #'
-#' # For use in {shinysurveys}
+#' # For use in {shinysurveys2}
 #'
 #' if (interactive()) {
 #'
@@ -175,8 +175,8 @@ radioMatrixInput <- function(inputId, responseItems, choices, selected = NULL, .
   shiny::tagList(
     htmltools::htmlDependency(
       name = "radioMatrixInput",
-      version = utils::packageVersion("shinysurveys"),
-      package = "shinysurveys",
+      version = utils::packageVersion("shinysurveys2"),
+      package = "shinysurveys2",
       src = "radioMatrixInput",
       script = "js/radioMatrixInput.js",
       stylesheet = "css/radioMatrixInput.css"

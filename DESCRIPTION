@@ -1,12 +1,16 @@
-Package: shinysurveys
+Package: shinysurveys2
 Title: Create and Deploy Surveys in 'Shiny'
-Version: 0.2.0.9000
+Version: 0.3.0
 Authors@R: 
     c(
+    person(given = "Gregory R.",
+           family = "Warnes",
+           role = c("aut", "cre"),
+           email = 'greg@warnes.net'),
     person(given = "Jonathan",
            family = "Trattner",
-           role = c("aut", "cre"),
-           email = "jdt@jdtrat.com",
+           role = c("aut"),
+           email = "jdt@Warnes-Innovations.com",
            comment = c(ORCID = "0000-0002-1097-7603")),
     person(given = "Lucy", 
            family = c("D'Agostino McGowan"), 
@@ -21,12 +25,12 @@ Description: Easily create and deploy surveys in 'Shiny'. This package includes
     a minimalistic framework similar to 'Google Forms' that allows for url-based
     user tracking, customizable submit actions, easy survey-theming, and more.
 License: MIT + file LICENSE
-URL: https://shinysurveys.jdtrat.com, https://github.com/jdtrat/shinysurveys
-BugReports: https://github.com/jdtrat/shinysurveys/issues
+URL: https://github.com/Warnes-Innovations/shinysurveys2
+BugReports: https://github.com/Warnes-Innovations/shinysurveys2/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.1
 Imports: 
     shiny,
     sass,

@@ -28,7 +28,7 @@ shinyInputLabel <- utils::getFromNamespace("shinyInputLabel", "shiny")
 #'
 #' if (interactive()) {
 #' library(shiny)
-#' library(shinysurveys)
+#' library(shinysurveys2)
 #'
 #' ui <- fluidPage(
 #'   numberInput("obs", "Observations:", placeholder = "How many do you see?", min = 1, max = 100),

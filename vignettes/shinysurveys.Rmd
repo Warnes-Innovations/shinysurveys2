@@ -1,8 +1,8 @@
 ---
-title: "Learn shinysurveys"
+title: "Learn shinysurveys2"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Learn shinysurveys}
+  %\VignetteIndexEntry{Learn shinysurveys2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,26 +17,26 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-{shinysurveys} provides easy-to-use, minimalistic code for creating and deploying surveys in R. It extends the {shiny} package and converts a table of questions into an interactive web-based application. Administering surveys with this package allows users to combine the computational tools of R with the interactivity of web applications. This helps bridge the gap between data collection and data analysis. 
+{shinysurveys2} provides easy-to-use, minimalistic code for creating and deploying surveys in R. It extends the {shiny} package and converts a table of questions into an interactive web-based application. Administering surveys with this package allows users to combine the computational tools of R with the interactivity of web applications. This helps bridge the gap between data collection and data analysis. 
 
 ## Installation
 
-You can install {shinysurveys} via CRAN or GitHub and load it as follows:
+You can install {shinysurveys2} via CRAN or GitHub and load it as follows:
 
 ```r
 # Install released version from CRAN
-install.packages("shinysurveys")
+install.packages("shinysurveys2")
 
 # Or, install the development version from GitHub
-remotes::install_github("jdtrat/shinysurveys")
+remotes::install_github("Warnes-Innovations/shinysurveys2")
 
 # Load package
-library(shinysurveys)
+library(shinysurveys2)
 ```
 
 ## Basic Survey
 
-{shinysurveys} exports two functions: `surveyOutput()` and `renderSurvey()`. The former goes in the UI portion of a Shiny app, and the latter goes in the server portion. To create a survey, you can build a data frame with your questions. The following columns are required.
+{shinysurveys2} exports two functions: `surveyOutput()` and `renderSurvey()`. The former goes in the UI portion of a Shiny app, and the latter goes in the server portion. To create a survey, you can build a data frame with your questions. The following columns are required.
 
 -   *question*: The question to be asked.
 -   *option*: A possible response to the question. In multiple choice questions, for example, this would be the possible answers. For questions without discrete answers, such as a numeric input, this would be the default option shown on the input. For text inputs, it is the placeholder value.
@@ -50,7 +50,7 @@ A demo survey can be created as follows:
 
 ```r
 library(shiny)
-library(shinysurveys)
+library(shinysurveys2)
 
 df <- data.frame(question = "What is your favorite food?",
                  option = "Your Answer",
@@ -63,7 +63,7 @@ df <- data.frame(question = "What is your favorite food?",
 ui <- fluidPage(
   surveyOutput(df = df,
                survey_title = "Hello, World!",
-               survey_description = "Welcome! This is a demo survey showing off the {shinysurveys} package.")
+               survey_description = "Welcome! This is a demo survey showing off the {shinysurveys2} package.")
 )
 
 server <- function(input, output, session) {
@@ -82,8 +82,8 @@ shinyApp(ui, server)
 
 In the browser, this looks like:
 
-![](https://www.jdtrat.com/project/shinysurveys/shinysurveys-final-demo.gif)
+![](https://www.Warnes-Innovations.com/project/shinysurveys2/shinysurveys2-final-demo.gif)
 
 ## Further Reading
 
-For a more in-depth explanation of {shinysurveys}, please see the vignette [*A survey of {shinysurveys}*](https://shinysurveys.jdtrat.com/articles/surveying-shinysurveys.html).
+For a more in-depth explanation of {shinysurveys2}, please see the vignette [*A survey of {shinysurveys2}*](https://shinysurveys2.Warnes-Innovations.com/articles/surveying-shinysurveys2.html).

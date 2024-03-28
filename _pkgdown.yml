@@ -1,25 +1,25 @@
 destination: docs
 
-url: https://shinysurveys.jdtrat.com
+url: https://shinysurveys2.Warnes-Innovations.com
 repo:
-    home: https://github.com/jdtrat/shinysurveys/
-    source: https://github.com/jdtrat/shinysurveys/blob/master/
-    issue: https://github.com/jdtrat/shinysurveys/issues/
-    user: https://github.com/jdtrat/
+    home: https://github.com/Warnes-Innovations/shinysurveys2/
+    source: https://github.com/Warnes-Innovations/shinysurveys2/blob/master/
+    issue: https://github.com/Warnes-Innovations/shinysurveys2/issues/
+    user: https://github.com/Warnes-Innovations/
 
 template:
   package: jdtdown
   opengraph:
     image:
       src: man/figures/logo.png
-      alt: "shinysurveys package"
+      alt: "shinysurveys2 package"
     twitter:
-      creator: "@jdtrat"
+      creator: "@Warnes-Innovations"
       card: summary
 
 authors:
   Jonathan Trattner:
-    href: "https://jdtrat.com"
+    href: "https://Warnes-Innovations.com"
   Lucy D'Agostino McGowan:
     href: "https://lucymcgowan.com"
 
@@ -44,7 +44,7 @@ navbar:
       href: reference/index.html
     github:
       icon: fab fa-github fa-lg
-      href: https://github.com/jdtrat/shinysurveys
+      href: https://github.com/Warnes-Innovations/shinysurveys2
     news:
       text: News
       menu:
@@ -52,14 +52,14 @@ navbar:
           href: news/index.html
         - text: "------------------"
         - text: "Blog posts"
-        - text: "shinysurveys 0.2.0"
-          href: https://www.jdtrat.com/blog/shinysurveys-0-2-0/
+        - text: "shinysurveys2 0.2.0"
+          href: https://www.Warnes-Innovations.com/blog/shinysurveys2-0-2-0/
 
 articles:
   - title: Vignettes
     navbar: ~
     contents:
-    - surveying-shinysurveys
+    - surveying-shinysurveys2
     - custom-input-extensions
     - get-survey-data
 
@@ -83,13 +83,13 @@ reference:
     - hideSurvey
 - title: "Shinysurvey Inputs"
   decc: >
-    Input types from shinysurveys to be used in shiny apps.
+    Input types from shinysurveys2 to be used in shiny apps.
   contents:
     - radioMatrixInput
     - numberInput
 - title: "Demo tools"
   desc: >
-    Functions and data to help you get started with {shinysurveys}.
+    Functions and data to help you get started with {shinysurveys2}.
   contents:
     - demo_survey
     - demo_survey_multipage

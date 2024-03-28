@@ -1,6 +1,6 @@
 #' Remove CSS Class
 #'
-#' Custom function for removing a CSS class used in {shinysurveys}.
+#' Custom function for removing a CSS class used in {shinysurveys2}.
 #'
 #' @param .id Shiny object inputId
 #' @param .class class to be removed
@@ -19,7 +19,7 @@ remove_class <- function(.id, .class) {
 
 #' Add CSS Class
 #'
-#' Custom function for adding a CSS class used in {shinysurveys}.
+#' Custom function for adding a CSS class used in {shinysurveys2}.
 #'
 #' @param .id Shiny object inputId
 #' @param .class class to be added
@@ -38,7 +38,7 @@ add_class <- function(.id, .class) {
 
 #' Disable HTML element
 #'
-#' Custom function for disabling an HTML element in {shinysurveys}.
+#' Custom function for disabling an HTML element in {shinysurveys2}.
 #'
 #' @param .id Shiny object inputId
 #' @keywords internal
@@ -55,7 +55,7 @@ disable_element <- function(.id) {
 
 #' Enable HTML element
 #'
-#' Custom function for disabling an HTML element in {shinysurveys}.
+#' Custom function for disabling an HTML element in {shinysurveys2}.
 #'
 #' @param .id Shiny object inputId
 #' @keywords internal
@@ -82,7 +82,7 @@ enable_element <- function(.id) {
 #' if (interactive()) {
 #'
 #'   library(shiny)
-#'   library(shinysurveys)
+#'   library(shinysurveys2)
 #'
 #'   ui <- fluidPage(
 #'     surveyOutput(teaching_r_questions,

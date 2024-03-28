@@ -29,7 +29,7 @@ make_survey_response_df <- function(.question_id, .question_type, .response) {
     )
 
   } else {
-    stop("Could not save data. Unknown error.\n Please file an issue at https://github.com/jdtrat/shinysurveys/issues, including a data set that recreates this problem.")
+    stop("Could not save data. Unknown error.\n Please file an issue at https://github.com/Warnes-Innovations/shinysurveys2/issues, including a data set that recreates this problem.")
   }
 
   return(output)
